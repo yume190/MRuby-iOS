@@ -1,0 +1,4 @@
+module MRuby {
+    header "public.h"
+    export *
+}

@@ -1,0 +1,4 @@
+module CMRuby {
+    header "public.h"
+    export *
+}
