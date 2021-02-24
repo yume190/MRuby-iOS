@@ -9,5 +9,5 @@
 executable `mrbc` to swift code 
 
 ``` swift
-func compile(code: String) -> Data
+public func compile(code: String, removeLocalVariable: Bool = true) -> Data
 ```

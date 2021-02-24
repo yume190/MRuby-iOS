@@ -15,7 +15,7 @@
 void cmruby_free(void* mrb, uint8_t *data);
 
 struct YumeOutput
-cmruby_compile(const char *code)
+cmruby_compile(const char *code, bool remove_lv)
 {
     mrb_state *mrb = mrb_open();
     int n, result;
@@ -35,6 +35,9 @@ cmruby_compile(const char *code)
     const mrb_irep *irep = proc->body.irep;
     uint8_t flags = 0;
     
+    if (remove_lv) {
+        mrb_irep_remove_lv(mrb, irep);
+    }
     result = mrb_dump_irep(mrb, irep, flags, &bin, &bin_size);
 //    if (result == MRB_DUMP_OK) {
 //    }

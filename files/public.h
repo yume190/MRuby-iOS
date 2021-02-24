@@ -9,6 +9,7 @@
 #define Public_h
 
 #include <stddef.h>
+#include <stdbool.h>
 
 typedef unsigned char uint8_t;
 struct YumeOutput {
@@ -19,5 +20,5 @@ struct YumeOutput {
 };
 
 struct YumeOutput
-cmruby_compile(const char *code);
+cmruby_compile(const char *code, bool remove_lv);
 #endif /* Public_h */

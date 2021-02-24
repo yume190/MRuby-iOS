@@ -2,34 +2,42 @@ import XCTest
 @testable import MRuby
 
 final class MRubyTests: XCTestCase {
-    let code = """
-    a = get_sensor("01ed0001");
-    b = get_sensor("01ed0002");
-    if a > 128
-        set_status(1, 2, 0x1);
-    elsif b < 128
-        set_status(1,2,0x2);
-    else
-        set_status(1,2,0);
-    end
-
-    """
-    func testExample() {
+    func testFormula1() throws {
+        let file = "formula_01"
         let bundle = Bundle.module
-        let url = bundle.url(forResource: "test", withExtension: "bin",subdirectory: "Resource")
-        
-        do {
-            let origin = try Data(contentsOf: url!)
-            print(origin)
-            let compiled = MRuby.compile(code: code)
-            print(compiled)
-            XCTAssertEqual(origin, compiled)
-        } catch {
-            print("load file fail")
-        }
+        let code = try String(contentsOf: bundle.url(forResource: file, withExtension: "rb", subdirectory: "Resource/code")!)
+        let full = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/full")!)
+        let noLV = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/remove_lv")!)
+            
+        XCTAssertEqual(full, MRuby.compile(code: code, removeLocalVariable: false))
+        XCTAssertEqual(noLV, MRuby.compile(code: code, removeLocalVariable: true))
+    }
+    
+    func testFormula2() throws {
+        let file = "formula_02"
+        let bundle = Bundle.module
+        let code = try String(contentsOf: bundle.url(forResource: file, withExtension: "rb", subdirectory: "Resource/code")!)
+        let full = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/full")!)
+        let noLV = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/remove_lv")!)
+            
+        XCTAssertEqual(full, MRuby.compile(code: code, removeLocalVariable: false))
+        XCTAssertEqual(noLV, MRuby.compile(code: code, removeLocalVariable: true))
+    }
+    
+    func testFormula3() throws {
+        let file = "formula_03"
+        let bundle = Bundle.module
+        let code = try String(contentsOf: bundle.url(forResource: file, withExtension: "rb", subdirectory: "Resource/code")!)
+        let full = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/full")!)
+        let noLV = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/remove_lv")!)
+            
+        XCTAssertEqual(full, MRuby.compile(code: code, removeLocalVariable: false))
+        XCTAssertEqual(noLV, MRuby.compile(code: code, removeLocalVariable: true))
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testFormula1", testFormula1),
+        ("testFormula2", testFormula2),
+        ("testFormula3", testFormula3),
     ]
 }
