@@ -9,8 +9,8 @@ final class MRubyTests: XCTestCase {
         let full = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/full")!)
         let noLV = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/remove_lv")!)
             
-        XCTAssertEqual(full, MRuby.compile(code: code, removeLocalVariable: false))
-        XCTAssertEqual(noLV, MRuby.compile(code: code, removeLocalVariable: true))
+        XCTAssertEqual(full, try! MRuby.compile(code: code, removeLocalVariable: false))
+        XCTAssertEqual(noLV, try! MRuby.compile(code: code, removeLocalVariable: true))
     }
     
     func testFormula2() throws {
@@ -20,8 +20,8 @@ final class MRubyTests: XCTestCase {
         let full = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/full")!)
         let noLV = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/remove_lv")!)
             
-        XCTAssertEqual(full, MRuby.compile(code: code, removeLocalVariable: false))
-        XCTAssertEqual(noLV, MRuby.compile(code: code, removeLocalVariable: true))
+        XCTAssertEqual(full, try! MRuby.compile(code: code, removeLocalVariable: false))
+        XCTAssertEqual(noLV, try! MRuby.compile(code: code, removeLocalVariable: true))
     }
     
     func testFormula3() throws {
@@ -31,8 +31,22 @@ final class MRubyTests: XCTestCase {
         let full = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/full")!)
         let noLV = try Data(contentsOf: bundle.url(forResource: file, withExtension: "bin", subdirectory: "Resource/remove_lv")!)
             
-        XCTAssertEqual(full, MRuby.compile(code: code, removeLocalVariable: false))
-        XCTAssertEqual(noLV, MRuby.compile(code: code, removeLocalVariable: true))
+        XCTAssertEqual(full, try! MRuby.compile(code: code, removeLocalVariable: false))
+        XCTAssertEqual(noLV, try! MRuby.compile(code: code, removeLocalVariable: true))
+    }
+    
+    func testCompileError() throws {
+        let code = """
+        if ( == )
+        end
+        """
+        do {
+            _ = try MRuby.compile(code: code)
+            assert(false)
+        } catch {
+            assert(true)
+        }
+        
     }
 
     static var allTests = [

@@ -18,6 +18,12 @@ struct YumeOutput
 cmruby_compile(const char *code, bool remove_lv)
 {
     mrb_state *mrb = mrb_open();
+    if (mrb == NULL) {
+        struct YumeOutput output = {
+            .result = EXIT_FAILURE,
+        };
+        return output;
+    }
     int n, result;
     
     FILE *wfp;
@@ -27,11 +33,25 @@ cmruby_compile(const char *code, bool remove_lv)
     mrb_value load = mrb_load_string_cxt(mrb, code, c);
     if (mrb_nil_p(load)) {
         printf("nil load");
+        struct YumeOutput output = {
+            .result = EXIT_FAILURE,
+            .mrb = mrb,
+            .free = cmruby_free
+        };
+        return output;
     }
     
     uint8_t *bin = NULL;
     size_t bin_size = 0;
     struct RProc *proc = mrb_proc_ptr(load);
+    if (proc == NULL) {
+        struct YumeOutput output = {
+            .result = EXIT_FAILURE,
+            .mrb = mrb,
+            .free = cmruby_free
+        };
+        return output;
+    }
     const mrb_irep *irep = proc->body.irep;
     uint8_t flags = 0;
     
@@ -43,6 +63,7 @@ cmruby_compile(const char *code, bool remove_lv)
 //    }
     
     struct YumeOutput output = {
+        .result = result,
         .data = bin,
         .size = bin_size,
         .mrb = mrb,

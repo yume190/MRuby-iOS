@@ -13,6 +13,7 @@
 
 typedef unsigned char uint8_t;
 struct YumeOutput {
+    int result;
     uint8_t *data;
     size_t size;
     void *mrb;
