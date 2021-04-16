@@ -35,16 +35,29 @@ final class MRubyTests: XCTestCase {
         XCTAssertEqual(noLV, try! MRuby.compile(code: code, removeLocalVariable: true))
     }
     
-    func testCompileError() throws {
+    func testCompileErrorIf() throws {
         let code = """
         if ( == )
         end
         """
         do {
             _ = try MRuby.compile(code: code)
-            assert(false)
+            XCTAssertTrue(false)
         } catch {
-            assert(true)
+            XCTAssertTrue(true)
+        }
+        
+    }
+    
+    func testCompileOk1() throws {
+        let code = """
+        set(1, )
+        """
+        do {
+            _ = try MRuby.compile(code: code)
+            XCTAssertTrue(true)
+        } catch {
+            XCTAssertTrue(false)
         }
         
     }

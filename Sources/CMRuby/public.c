@@ -21,6 +21,8 @@ cmruby_compile(const char *code, bool remove_lv)
     if (mrb == NULL) {
         struct YumeOutput output = {
             .result = EXIT_FAILURE,
+            .mrb = mrb,
+            .free = cmruby_free
         };
         return output;
     }
@@ -52,7 +54,7 @@ cmruby_compile(const char *code, bool remove_lv)
         };
         return output;
     }
-    const mrb_irep *irep = proc->body.irep;
+    mrb_irep *irep = proc->body.irep;
     uint8_t flags = 0;
     
     if (remove_lv) {
@@ -73,8 +75,13 @@ cmruby_compile(const char *code, bool remove_lv)
 }
 
 void cmruby_free(void* mrb, uint8_t *data) {
-    mrb_free(mrb, data);
-    mrb_close(mrb);
+    if (mrb) {
+        if (data) {
+            mrb_free(mrb, data);
+        }
+        mrb_close(mrb);
+    }
+    
 }
 
 void

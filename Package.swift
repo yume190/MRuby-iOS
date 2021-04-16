@@ -27,7 +27,14 @@ let package = Package(
         
         .target(
             name: "CMRuby",
-            dependencies: []),
+            dependencies: [],
+            exclude: [
+                "src/mruby_core.rake",
+                "mrbgems/mruby-compiler/core/lex.def",
+                "mrbgems/mruby-compiler/core/parse.y",
+                "mrbgems/mruby-compiler/core/keywords",
+            ]
+        ),
         .testTarget(
             name: "MRubyTests",
             dependencies: ["MRuby"],
